@@ -1,0 +1,19 @@
+{
+  "name": "ao-redstone-oracle",
+  "type": "module",
+  "scripts": {
+    "ao-cli": "curl -L https://arweave.net/BVhXa-OCcQV6xuhsoS6207uHkXcRz4UmR5xvQct1GXI | bash",
+    "test": "node build.js && vitest",
+    "build": "cd redstone-oracle-process && ao build && mkdir -p dist && mv process.wasm dist/",
+    "loader-issue": "cd test-process && ao build && node --experimental-wasm-memory64 process.helper.mjs"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@permaweb/aoconnect": "^0.0.56",
+    "@permaweb/ao-loader": "0.0.35",
+    "arweave": "^1.15.1",
+    "esbuild": "^0.20.2",
+    "vitest": "^1.6.0"
+  }
+}

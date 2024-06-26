@@ -32,4 +32,5 @@ logs
 target
 metafile.json
 
-*.wasm
+test-process/*.wasm
+redstone-oracle-process/dist/*.wasm

@@ -1,38 +1,36 @@
 import AoLoader from '@permaweb/ao-loader'
 import fs from 'fs'
 
-const process = fs.readFileSync('./dist/process.wasm')
-const format = 'wasm32-unknown-emscripten'
-let memory = null
+const process = fs.readFileSync('./aos/aos_1_Pq2Zftrqut0hdisH_MC2pDOT6S4eQFoxGsFUzR6r350.wasm');
+const format = "wasm64-unknown-emscripten-draft_2024_02_15";
+let memory = null;
+const handle = await AoLoader(process, {
+  format,
+});
 
-export async function Send(DataItem) {
-
-  const msg = Object.keys(DataItem).reduce(function (di, k) {
+function prepareMessageFrom(DataItem) {
+  return Object.keys(DataItem).reduce(function (di, k) {
     if (di[k]) {
       di[k] = DataItem[k]
     } else {
-      di.Tags = di.Tags.concat([{ name: k, value: DataItem[k] }])
+      di.Tags = di.Tags.concat([{name: k, value: DataItem[k]}])
     }
     return di
-  }, createMsg())
+  }, createMsg());
+}
 
-  const handle = await AoLoader(process, {
-    format: "wasm64-unknown-emscripten-draft_2024_02_15",
-    inputEncoding: "JSON-1",
-    outputEncoding: "JSON-1",
-    memoryLimit: "524288000", // in bytes
-    computeLimit: 9e12.toString(),
-    extensions: []
-  })
-  //const env = createEnv()
+export async function Send(DataItem) {
 
-  /*const result = await handle(memory, msg, env)
+  const msg = prepareMessageFrom(DataItem)
+  const env = createEnv()
+
+  const result = await handle(memory, msg, env)
   if (result.Error) {
     return 'ERROR: ' + JSON.stringify(result.Error)
   }
   memory = result.Memory
 
-  return { Messages: result.Messages, Spawns: result.Spawns, Output: result.Output, Assignments: result.Assignments }*/
+  return { Messages: result.Messages, Spawns: result.Spawns, Output: result.Output, Assignments: result.Assignments }
 }
 
 function createMsg() {

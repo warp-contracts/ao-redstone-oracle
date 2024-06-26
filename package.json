@@ -8,12 +8,11 @@
     "loader-issue": "cd test-process && ao build && node --experimental-wasm-memory64 process.helper.mjs"
   },
   "dependencies": {
+    "redstone-sdk": "^1.8.2",
+    "@permaweb/aoconnect": "^0.0.56"
   },
   "devDependencies": {
-    "@permaweb/aoconnect": "^0.0.56",
     "@permaweb/ao-loader": "0.0.35",
-    "arweave": "^1.15.1",
-    "esbuild": "^0.20.2",
     "vitest": "^1.6.0"
   }
 }

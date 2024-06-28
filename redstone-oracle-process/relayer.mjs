@@ -1,35 +1,58 @@
-import {requestDataPackages} from "redstone-sdk";
-import {createDataItemSigner, message} from "@permaweb/aoconnect";
+import {connect, createDataItemSigner} from "@permaweb/aoconnect";
 import fs from "node:fs";
+import {requestDataPackages} from "@redstone-finance/sdk";
 
-const wallet = JSON.parse(fs.readFileSync("./.secrets/wallet.json", "utf-8"));
-const processId = "";
+const envIdx = process.argv.indexOf('--env');
+if (envIdx < 0) {
+  throw new Error("Specify 'env' flash with either 'local' or 'prod' value");
+}
+const env = process.argv[envIdx + 1];
+
+console.log(`Running in ${env} environment`);
+
+const DATA_FEEDS = ["BTC", "ETH", "USDC", "USDT", "SOL", "stETH", "AR"];
+const DATA_SERVICE_ID = "redstone-primary-prod";
+const PROCESS = env == 'local' ? 'yeJnLGqU09NwdZGR0yAOWpbMVSthYGkLmrLjVvpGw7M' : '';
+
+const WALLET = JSON.parse(fs.readFileSync("./.secrets/wallet.json", "utf-8"));
+const MU_URL = env === 'local' ? 'http://localhost:8080' : 'https://mu.warp.cc';
+const CU_URL = env === 'local' ? 'http://localhost:8090' : 'https://cu.warp.cc';
+
+const { message, result } = connect({
+  MU_URL,
+  CU_URL
+});
 
 async function getPricePackage() {
   const reqParams = {
-    dataServiceId: "redstone-primary-prod",
-    dataFeeds: ["BTC", "ETH", "USDC", "USDT", "SOL", "stETH"],
+    dataServiceId: DATA_SERVICE_ID,
+    dataFeeds: DATA_FEEDS,
     uniqueSignersCount: 1,
   }
-  return requestDataPackages(reqParams);
+  const dataPackagesResponse = await requestDataPackages(reqParams);
+
+  return dataPackagesResponse;
 }
 
 async function postPricePackages() {
   const prices = await getPricePackage();
-  try {
-    const result = await message({
-      process: processId,
-      signer: createDataItemSigner(wallet),
-      data: JSON.stringify(prices),
-      tags: [
-        {name: "Data-Service-Id", value: "redstone-primary-prod"},
-        {name: "Timestamp-Sent", value: "" + Date.now()}
-      ]
-    });
-    console.log(result);
-  } catch (e) {
-    console.error(e);
-  }
+  const msgId = await message({
+    process: PROCESS,
+    signer: createDataItemSigner(WALLET),
+    data: JSON.stringify(prices),
+    tags: [
+      {name: 'Action', value: 'storePricePackages'},
+      {name: 'Sent-Timestamp', value: '' + Date.now() },
+    ],
+  });
+
+  const msgResult = await result({
+    message: msgId,
+    process: PROCESS,
+  });
+  console.log(msgResult);
+
+  return msgId;
 }
 
 postPricePackages()

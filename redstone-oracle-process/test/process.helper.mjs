@@ -1,7 +1,7 @@
 import AoLoader from '@permaweb/ao-loader'
 import fs from 'fs'
 
-const process = fs.readFileSync('./aos/aos_1_Pq2Zftrqut0hdisH_MC2pDOT6S4eQFoxGsFUzR6r350.wasm');
+const process = fs.readFileSync('./redstone-oracle-process/dist/process.wasm');
 const format = "wasm64-unknown-emscripten-draft_2024_02_15";
 let memory = null;
 const handle = await AoLoader(process, {
@@ -16,12 +16,13 @@ function prepareMessageFrom(DataItem) {
       di.Tags = di.Tags.concat([{name: k, value: DataItem[k]}])
     }
     return di
-  }, createMsg());
+  }, createMsg(DataItem));
 }
 
 export async function Send(DataItem) {
 
   const msg = prepareMessageFrom(DataItem)
+  console.log(msg.Tags);
   const env = createEnv()
 
   const result = await handle(memory, msg, env)
@@ -33,13 +34,13 @@ export async function Send(DataItem) {
   return { Messages: result.Messages, Spawns: result.Spawns, Output: result.Output, Assignments: result.Assignments }
 }
 
-function createMsg() {
+function createMsg(DataItem) {
   return {
     Id: '1234',
     Target: 'AOS',
-    Owner: 'OWNER',
-    From: 'OWNER',
-    Data: '1984',
+    Owner: DataItem.Owner,
+    From: DataItem.Owner,
+    Data: DataItem.Data,
     Tags: [],
     'Block-Height': '1',
     Timestamp: Date.now(),

@@ -6,6 +6,7 @@
     "test": "node build.js && vitest",
     "build": "cd redstone-oracle-process && ao build && mkdir -p dist && mv process.wasm dist/",
     "deploy": "ao publish redstone-oracle-process/dist/process.wasm -w .secrets/wallet.json -t Memory-Limit -v 1-gb -t Compute-Limit -v 9000000000000 -t Module-Format -v wasm64-unknown-emscripten-draft_2024_02_15",
+    "pm2": "pm2 start redstone-oracle-process/relayer.mjs --name redstone-relayer --cron-restart=\"*/15 * * * * *\" -- --env prod/dist/process.wasm -w .secrets/wallet.json -t Memory-Limit -v 1-gb -t Compute-Limit -v 9000000000000 -t Module-Format -v wasm64-unknown-emscripten-draft_2024_02_15",
     "loader-issue": "cd test-process && ao build && node --experimental-wasm-memory64 process.helper.mjs"
   },
   "dependencies": {

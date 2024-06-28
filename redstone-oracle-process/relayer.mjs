@@ -12,7 +12,9 @@ console.log(`Running in ${env} environment`);
 
 const DATA_FEEDS = ["BTC", "ETH", "USDC", "USDT", "SOL", "stETH", "AR"];
 const DATA_SERVICE_ID = "redstone-primary-prod";
-const PROCESS = env == 'local' ? 'yeJnLGqU09NwdZGR0yAOWpbMVSthYGkLmrLjVvpGw7M' : '';
+const PROCESS = env == 'local'
+  ? 'yeJnLGqU09NwdZGR0yAOWpbMVSthYGkLmrLjVvpGw7M'
+  : '0OfM_bUETz1yJURVQbzhJDpqR2bejPv3UxFLsF2olg0';
 
 const WALLET = JSON.parse(fs.readFileSync("./.secrets/wallet.json", "utf-8"));
 const MU_URL = env === 'local' ? 'http://localhost:8080' : 'https://mu.warp.cc';

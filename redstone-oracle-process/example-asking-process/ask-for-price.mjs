@@ -6,7 +6,7 @@ console.info(`Asking for a price`);
 
 const WALLET = JSON.parse(fs.readFileSync("./.secrets/wallet.json", "utf-8"));
 
-const process = "MPFcKWy8GRVQhNVqGsmqV2AVLwmN5XewsWct_EBXEhs";
+const process = "UhOpP8XPY_qgSY8Lo-0GDYSDNV0KRwzuwddXeEgHZ3s";
 
 async function ask() {
   const msgId = await message({

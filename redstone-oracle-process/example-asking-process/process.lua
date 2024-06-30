@@ -16,7 +16,7 @@ function process.handle(msg, ao)
             Target = 'KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y',
             ReqId = msg.Id,
             Action = "Request-Latest-Data",
-            Tickers = json.encode({ "BTC", "ETH", "USDC", "USDT", "SOL", "stETH", "AR" })
+            Tickers = json.encode({ "AR" })
         })
         return ao.result({
             Output = 'Message to Oracle sent from ' .. msg.Id

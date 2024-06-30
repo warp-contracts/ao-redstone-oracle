@@ -1,68 +1,66 @@
 # AO RedStone Oracle
 
+## High level overview
+
+![img.png](docs/overview.png)
+
+1. The AO Builders **Relayer** is loading a subset of prices offered
+   by [RedStone Primary Data Service](https://app.redstone.finance/#/app/data-services/redstone-primary-prod).  
+   Currently, offered prices (in relation to USD) are:  
+   "BTC", "ETH", "USDC", "USDT", "SOL", "stETH", "AR"
+2. The **Relayer** sends the RedStone data to the **[Verifier Process](https://www.ao.link/#/entity/ILnN6EL4zUE3nPovKBwvOl8GvC2RsvE8x_JYG8Fx6aY)** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/warp/oracle.process.mjs)).
+3. The **Oracle Verifier Process** [verifies](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/warp/oracle.process.mjs#L76)
+   the prices signatures and timestamps using the official RedStone
+   protocol [package](https://github.com/redstone-finance/redstone-oracles-monorepo/tree/main/packages/protocol).
+   This package is attached to the Process code via Warp
+   QuickJs [plugin](https://github.com/warp-contracts/warp-contracts-plugins/blob/main/warp-contracts-plugin-quickjs/src/eval/QuickJsEvaluator.ts#L54).
+4. If the prices are properly verified - i.e.
+    - They are signed by a set of trusted RedStone nodes
+    - Their timestamp is not too old in relation to the message timestamp
+
+   they are sent to the **[Storage Process](https://www.ao.link/#/entity/KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y)** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/process.lua)).
+5. The **Oracle Storage Process** can be used by other Processes in the AO Testnet to load prices.
+
+## Ask for price from the **Oracle Storage Process**
+
+If you want to ask for a price from your process - send a message to the **Oracle Storage Process** with
+`Action = 'Request-Latest-Data'` and `Tickers = ['AR', 'ETH', ...]`
+
+Example:
+
+```lua
+ao.send({
+    Target = 'KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y', -- the Oracle Storage Process id
+    ReqId = msg.Id,
+    Action = "Request-Latest-Data",
+    Tickers = json.encode({ "AR" }) -- required prices
+})
+```
+
+In response, the **Oracle Storage Process** [sends](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/process.lua#L37) `Action = "Receive-RedStone-Prices"` with all the requested prices
+in the `Data`. Example `Data` in the message:
+
+```
+"Data": {
+   "AR": {
+      "a": "0x51Ce04Be4b3E32572C4Ec9135221d0691Ba7d202", // the address of the RedStone node which provided the price
+      "v": 27.346234546008, // the price value
+      "t": 1719774710000 // the timestamp of the price
+   }
+}
+```
+
+Example asking contract is [here](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/example-asking-process/process.lua).
+
 ### Process Ids
-1. AO Testnet Oracle Storage- `KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y`
-   1. Process `KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y`
-   2. Module `FrdUPdwGEKtRO9NURUU5MpESzk2hz8kHg4zKMYH_rO4`
-2. AO Warp Testnet Verifier Process - 
-   1. Process `ILnN6EL4zUE3nPovKBwvOl8GvC2RsvE8x_JYG8Fx6aY`
-   2. Module `_K-2x2UNxYgUc1O0uDwTNroF6vwk-CSmGl9mwsOeqVc`
-3. AO Testnet Example asking process
-   1. Process `8_jC3ICVqoongkw1fvdncGdHK_uTyffRzSojDE-0pv8`
-   2. Module `O-6Pl2pUTgaeuDwEnfERKBQ6jPr8tLq27wsqu0Ai1iM`
 
-### AoLoader issue reproduction
-
-1. `curl -L https://arweave.net/BVhXa-OCcQV6xuhsoS6207uHkXcRz4UmR5xvQct1GXI | bash`
-2. `ao --version` should show `0.0.54`
-3. `git clone https://github.com/warp-contracts/ao-redstone-oracle.git`
-4. `cd ao-redstone-oracle`
-5. `npm install`
-6. `npm run loader-issue`
-
-Expected result:
-The `AoLoader` should load the wasm binary using one of the predefined formats
-
-Result:
-`AoLoader` fails to load wasm binary, no matter which format is used.
-
-Example output:
-```
-npm run loader-issue
-
-> loader-issue
-> cd test-process && ao build && node --experimental-wasm-memory64 process.helper.mjs
-
-emcc: warning: -sMEMORY64 is still experimental. Many features may not work. [-Wexperimental]
-cache:INFO: generating system asset: symbol_lists/90be13d5bafb3254bd351cb6d04d5e6d75f87d33.json... (this will be cached in "/emsdk/upstream/emscripten/cache/symbol_lists/90be13d5bafb3254bd351cb6d04d5e6d75f87d33.json" for subsequent builds)
-cache:INFO:  - ok
-
-Checking format  wasm32-unknown-emscripten
-failed to asynchronously prepare wasm: TypeError: WebAssembly.instantiate(): Import #0 module="env" error: module is not an object or function
-Aborted(TypeError: WebAssembly.instantiate(): Import #0 module="env" error: module is not an object or function)
-RuntimeError: Aborted(TypeError: WebAssembly.instantiate(): Import #0 module="env" error: module is not an object or function). Build with -sASSERTIONS for more info.
-    at abort (/Users/ppe/projects/ao-redstone-oracle/node_modules/@permaweb/ao-loader/dist/index.cjs:479:21)
-    at /Users/ppe/projects/ao-redstone-oracle/node_modules/@permaweb/ao-loader/dist/index.cjs:560:15
-
-Checking format  wasm32-unknown-emscripten2
-failed to asynchronously prepare wasm: LinkError: WebAssembly.instantiate(): Import #1 module="env" function="invoke_vjj" error: function import requires a callable
-Aborted(LinkError: WebAssembly.instantiate(): Import #1 module="env" function="invoke_vjj" error: function import requires a callable)
-RuntimeError: Aborted(LinkError: WebAssembly.instantiate(): Import #1 module="env" function="invoke_vjj" error: function import requires a callable)
-    at abort (/Users/ppe/projects/ao-redstone-oracle/node_modules/@permaweb/ao-loader/dist/index.cjs:2346:19)
-    at /Users/ppe/projects/ao-redstone-oracle/node_modules/@permaweb/ao-loader/dist/index.cjs:2456:15
-
-Checking format  wasm32-unknown-emscripten3
-failed to asynchronously prepare wasm: LinkError: WebAssembly.instantiate(): Import #1 module="env" function="invoke_vjj" error: function import requires a callable
-Aborted(LinkError: WebAssembly.instantiate(): Import #1 module="env" function="invoke_vjj" error: function import requires a callable)
-RuntimeError: Aborted(LinkError: WebAssembly.instantiate(): Import #1 module="env" function="invoke_vjj" error: function import requires a callable)
-    at abort (/Users/ppe/projects/ao-redstone-oracle/node_modules/@permaweb/ao-loader/dist/index.cjs:7240:19)
-    at /Users/ppe/projects/ao-redstone-oracle/node_modules/@permaweb/ao-loader/dist/index.cjs:7297:13
-
-Checking format  wasm64-unknown-emscripten-draft_2024_02_15
-failed to asynchronously prepare wasm: LinkError: WebAssembly.instantiate(): Import #0 module="env" function="abort" error: function import requires a callable
-Aborted(LinkError: WebAssembly.instantiate(): Import #0 module="env" function="abort" error: function import requires a callable)
-RuntimeError: Aborted(LinkError: WebAssembly.instantiate(): Import #0 module="env" function="abort" error: function import requires a callable)
-    at abort (/Users/ppe/projects/ao-redstone-oracle/node_modules/@permaweb/ao-loader/dist/index.cjs:12071:19)
-    at /Users/ppe/projects/ao-redstone-oracle/node_modules/@permaweb/ao-loader/dist/index.cjs:12132:13
-```
+1. AO Testnet Oracle Storage Process - https://www.ao.link/#/entity/KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y
+    1. Process `KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y`
+    2. Module `FrdUPdwGEKtRO9NURUU5MpESzk2hz8kHg4zKMYH_rO4`
+2. AO Warp Testnet Verifier Process - https://www.ao.link/#/entity/ILnN6EL4zUE3nPovKBwvOl8GvC2RsvE8x_JYG8Fx6aY
+    1. Process `ILnN6EL4zUE3nPovKBwvOl8GvC2RsvE8x_JYG8Fx6aY`
+    2. Module `_K-2x2UNxYgUc1O0uDwTNroF6vwk-CSmGl9mwsOeqVc`
+3. AO Testnet Example asking process - https://www.ao.link/#/entity/MPFcKWy8GRVQhNVqGsmqV2AVLwmN5XewsWct_EBXEhs
+    1. Process `MPFcKWy8GRVQhNVqGsmqV2AVLwmN5XewsWct_EBXEhs`
+    2. Module `7UNLxZmb0QmtprpwY6AMbVRwXtoYJbSUs0dCBN4GvzI`
 

@@ -15,7 +15,7 @@ const TRUSTED_REDSTONE_NODES = [
 const MAX_TS_DIFF_MS = 15_000;
 const MAX_LAST_UPDATES = 50;
 
-const AO_TESTNET_STORAGE_PROCESS = "Us4BVLXDjtRz7Qzf7osnNcxTsi4vEjfMWo1RRTzhigQ";
+const AO_TESTNET_STORAGE_PROCESS = "KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y";
 
 function handle(state, message) {
   console.log('handle');
@@ -45,7 +45,7 @@ function handle(state, message) {
   console.log('action', action);
 
   switch (action) {
-    case 'updateConfig': {
+    case 'Update-Config': {
       const newConfig = message.Tags.find((t) => t.name === 'Config').value
       state.config = {
         ...state.config,
@@ -55,8 +55,8 @@ function handle(state, message) {
       break;
     }
 
-    case 'storePricePackages':
-      console.log('inside storePricePackages');
+    case 'Store-Price-Packages':
+      console.log('inside Store-Price-Packages');
       const dataPackage = JSON.parse(message.Data);
       const sentTs = message.Tags.find((t) => t.name === 'Sent-Timestamp').value;
 
@@ -110,7 +110,7 @@ function handle(state, message) {
       ao.send({
         Data: JSON.stringify(result),
         Target: state.config.aoProcess,
-        Action: "storePrices"
+        Action: "Store-Prices"
       });
       break;
     default:

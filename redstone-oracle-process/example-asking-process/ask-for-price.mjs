@@ -6,15 +6,15 @@ console.info(`Asking for a price`);
 
 const WALLET = JSON.parse(fs.readFileSync("./.secrets/wallet.json", "utf-8"));
 
-const process = "KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y";
+const process = "MPFcKWy8GRVQhNVqGsmqV2AVLwmN5XewsWct_EBXEhs";
 
 async function ask() {
   const msgId = await message({
     process,
     signer: createDataItemSigner(WALLET),
     tags: [
-      {name: "Tickers", value: JSON.stringify(['AR', 'BTC']) },
-      {name: "Action", value: "Request-Latest-Data"}
+      {name: "Oracle-Process", value: "KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y" },
+      {name: "Action", value: "Check-Prices"}
     ],
     data: '1984'
   });
@@ -27,5 +27,5 @@ async function ask() {
 }
 
 ask()
-  .then((r) => console.dir(r, {depth: null}))
+  .then(console.log)
   .catch(console.error);

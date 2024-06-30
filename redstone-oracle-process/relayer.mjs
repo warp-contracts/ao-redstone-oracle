@@ -13,8 +13,8 @@ console.log(`Running in ${env} environment`);
 const DATA_FEEDS = ["BTC", "ETH", "USDC", "USDT", "SOL", "stETH", "AR"];
 const DATA_SERVICE_ID = "redstone-primary-prod";
 const PROCESS = env == 'local'
-  ? 'yeJnLGqU09NwdZGR0yAOWpbMVSthYGkLmrLjVvpGw7M'
-  : '0OfM_bUETz1yJURVQbzhJDpqR2bejPv3UxFLsF2olg0';
+  ? 'BtqvVNWvxcTuh2sSbq1aLlleguFnIIl2Za9mWZYQ_kw'
+  : 'ILnN6EL4zUE3nPovKBwvOl8GvC2RsvE8x_JYG8Fx6aY';
 
 const WALLET = JSON.parse(fs.readFileSync("./.secrets/wallet.json", "utf-8"));
 const MU_URL = env === 'local' ? 'http://localhost:8080' : 'https://mu.warp.cc';
@@ -43,7 +43,7 @@ async function postPricePackages() {
     signer: createDataItemSigner(WALLET),
     data: JSON.stringify(prices),
     tags: [
-      {name: 'Action', value: 'storePricePackages'},
+      {name: 'Action', value: 'Store-Price-Packages'},
       {name: 'Sent-Timestamp', value: '' + Date.now() },
     ],
   });

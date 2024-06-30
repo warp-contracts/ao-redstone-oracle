@@ -1,4 +1,15 @@
-# ao-redstone-oracle
+# AO RedStone Oracle
+
+### Process Ids
+1. AO Testnet Oracle Storage- `KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y`
+   1. Process `KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y`
+   2. Module `FrdUPdwGEKtRO9NURUU5MpESzk2hz8kHg4zKMYH_rO4`
+2. AO Warp Testnet Verifier Process - 
+   1. Process `ILnN6EL4zUE3nPovKBwvOl8GvC2RsvE8x_JYG8Fx6aY`
+   2. Module `_K-2x2UNxYgUc1O0uDwTNroF6vwk-CSmGl9mwsOeqVc`
+3. AO Testnet Example asking process
+   1. Process `8_jC3ICVqoongkw1fvdncGdHK_uTyffRzSojDE-0pv8`
+   2. Module `O-6Pl2pUTgaeuDwEnfERKBQ6jPr8tLq27wsqu0Ai1iM`
 
 ### AoLoader issue reproduction
 

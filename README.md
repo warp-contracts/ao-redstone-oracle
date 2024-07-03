@@ -55,12 +55,12 @@ Example asking contract is [here](https://github.com/warp-contracts/ao-redstone-
 ### Process Ids
 
 1. AO Testnet Oracle Storage Process - https://www.ao.link/#/entity/KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y
-    1. Process `KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y`
-    2. Module `FrdUPdwGEKtRO9NURUU5MpESzk2hz8kHg4zKMYH_rO4`
+    1. Process `fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk`
+    2. Module `PuJq3dcddz-JZBaYAP3tpEdogFdiyh8HO5tUSGol2N0`
 2. AO Warp Testnet Verifier Process - https://www.ao.link/#/entity/ILnN6EL4zUE3nPovKBwvOl8GvC2RsvE8x_JYG8Fx6aY
-    1. Process `ILnN6EL4zUE3nPovKBwvOl8GvC2RsvE8x_JYG8Fx6aY`
-    2. Module `_K-2x2UNxYgUc1O0uDwTNroF6vwk-CSmGl9mwsOeqVc`
+    1. Process `WrD1ew6AnpnGZwtJo1-LSxX7T79s42WkYOSaXk7Gvv4`
+    2. Module `iSxR0exVxlpL26emdzNAa5YLvuL5aqDJX8tz5QiESS4`
 3. AO Testnet Example asking process - https://www.ao.link/#/entity/MPFcKWy8GRVQhNVqGsmqV2AVLwmN5XewsWct_EBXEhs
-    1. Process `MPFcKWy8GRVQhNVqGsmqV2AVLwmN5XewsWct_EBXEhs`
-    2. Module `7UNLxZmb0QmtprpwY6AMbVRwXtoYJbSUs0dCBN4GvzI`
+    1. Process `mwhpR_CYe1JFTPYjOdbxKHphZUE0fMFenWY9Jo1kJKY`
+    2. Module `pNwWAYW5cVPiOv1vJpxParYc0YxkuQRyV5w3oEQ6nnU`
 

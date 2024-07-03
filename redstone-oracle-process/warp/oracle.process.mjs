@@ -15,7 +15,7 @@ const TRUSTED_REDSTONE_NODES = [
 const MAX_TS_DIFF_MS = 15_000;
 const MAX_LAST_UPDATES = 50;
 
-const AO_TESTNET_STORAGE_PROCESS = "KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y";
+const AO_TESTNET_STORAGE_PROCESS = "fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk";
 
 function handle(state, message) {
   console.log('handle');

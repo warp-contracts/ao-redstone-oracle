@@ -13,7 +13,7 @@ function process.handle(msg, ao)
         ao.log('Inside Check-Prices')
         -- ao.log('Oracle Process' .. msg['Oracle-Process'])
         ao.send({
-            Target = 'KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y',
+            Target = msg['Oracle-Process'],
             ReqId = msg.Id,
             Action = "Request-Latest-Data",
             Tickers = json.encode({ "AR" })

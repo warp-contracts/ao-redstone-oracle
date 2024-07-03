@@ -7,6 +7,7 @@
     "build": "cd redstone-oracle-process && ao build && mkdir -p dist && mv process.wasm dist/",
     "build-example": "cd redstone-oracle-process/example-asking-process && ao build && mkdir -p dist && mv process.wasm dist/",
     "deploy": "ao publish redstone-oracle-process/dist/process.wasm -w .secrets/wallet.json -t Memory-Limit -v 1-gb -t Compute-Limit -v 9000000000000 -t Module-Format -v wasm64-unknown-emscripten-draft_2024_02_15",
+    "spawn": "node redstone-oracle-process/spawn-lua.mjs",
     "deploy-example": "ao publish redstone-oracle-process/example-asking-process/dist/process.wasm -w .secrets/wallet.json -t Memory-Limit -v 1-gb -t Compute-Limit -v 9000000000000 -t Module-Format -v wasm64-unknown-emscripten-draft_2024_02_15",
     "spawn-example": "node redstone-oracle-process/example-asking-process/spawn-lua.mjs",
     "pm2": "pm2 start redstone-oracle-process/relayer.mjs --name redstone-relayer --cron-restart=\"*/15 * * * * *\" -- --env prod/dist/process.wasm -w .secrets/wallet.json -t Memory-Limit -v 1-gb -t Compute-Limit -v 9000000000000 -t Module-Format -v wasm64-unknown-emscripten-draft_2024_02_15",

@@ -1,4 +1,4 @@
-import {connect, createDataItemSigner, message, result} from "@permaweb/aoconnect";
+import {createDataItemSigner, message, result} from "@permaweb/aoconnect";
 import fs from "node:fs";
 
 console.info(`Asking for a price`);
@@ -6,14 +6,14 @@ console.info(`Asking for a price`);
 
 const WALLET = JSON.parse(fs.readFileSync("./.secrets/wallet.json", "utf-8"));
 
-const process = "UhOpP8XPY_qgSY8Lo-0GDYSDNV0KRwzuwddXeEgHZ3s";
+const process = "mwhpR_CYe1JFTPYjOdbxKHphZUE0fMFenWY9Jo1kJKY";
 
 async function ask() {
   const msgId = await message({
     process,
     signer: createDataItemSigner(WALLET),
     tags: [
-      {name: "Oracle-Process", value: "KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y" },
+      {name: "Oracle-Process", value: "fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk" },
       {name: "Action", value: "Check-Prices"}
     ],
     data: '1984'

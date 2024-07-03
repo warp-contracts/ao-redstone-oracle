@@ -14,7 +14,7 @@ const DATA_FEEDS = ["BTC", "ETH", "USDC", "USDT", "SOL", "stETH", "AR"];
 const DATA_SERVICE_ID = "redstone-primary-prod";
 const PROCESS = env == 'local'
   ? 'BtqvVNWvxcTuh2sSbq1aLlleguFnIIl2Za9mWZYQ_kw'
-  : 'ILnN6EL4zUE3nPovKBwvOl8GvC2RsvE8x_JYG8Fx6aY';
+  : 'iSxR0exVxlpL26emdzNAa5YLvuL5aqDJX8tz5QiESS4';
 
 const WALLET = JSON.parse(fs.readFileSync("./.secrets/wallet.json", "utf-8"));
 const MU_URL = env === 'local' ? 'http://localhost:8080' : 'https://mu.warp.cc';

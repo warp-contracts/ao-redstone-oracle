@@ -38,7 +38,7 @@ function process.handle(msg, ao)
             Target = msg.From,
             ReqId = msg.ReqId,
             Action = 'Receive-RedStone-Prices',
-            Data = result
+            Data = json.encode(result)
         })
         return ao.result({
             Output = {

@@ -26,9 +26,10 @@ function process.handle(msg, ao)
     -- receive requested data from RedStone Process
     if (action == "Receive-RedStone-Prices") then
         ao.log('Received price from RedStone Process')
+        local result = json.decode(msg.Data)
         return ao.result({
             Output = {
-                Result = msg.Data,
+                Result = result,
                 ReqId = msg.ReqId,
             }
         })

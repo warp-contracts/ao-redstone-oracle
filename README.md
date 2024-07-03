@@ -8,7 +8,7 @@
    by [RedStone Primary Data Service](https://app.redstone.finance/#/app/data-services/redstone-primary-prod).  
    Currently, offered prices (in relation to USD) are:  
    "BTC", "ETH", "USDC", "USDT", "SOL", "stETH", "AR"
-2. The **Relayer** sends the RedStone data to the **[Verifier Process](https://www.ao.link/#/entity/ILnN6EL4zUE3nPovKBwvOl8GvC2RsvE8x_JYG8Fx6aY)** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/warp/oracle.process.mjs)).
+2. The **Relayer** sends the RedStone data to the **[Verifier Process](https://www.ao.link/#/entity/WrD1ew6AnpnGZwtJo1-LSxX7T79s42WkYOSaXk7Gvv4)** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/warp/oracle.process.mjs)).
 3. The **Oracle Verifier Process** [verifies](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/warp/oracle.process.mjs#L76)
    the prices signatures and timestamps using the official RedStone
    protocol [package](https://github.com/redstone-finance/redstone-oracles-monorepo/tree/main/packages/protocol).
@@ -18,8 +18,8 @@
     - They are signed by a set of trusted RedStone nodes
     - Their timestamp is not too old in relation to the message timestamp
 
-   they are sent to the **[Storage Process](https://www.ao.link/#/entity/KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y)** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/process.lua)).
-5. The **Oracle Storage Process** can be used by other Processes in the AO Testnet to load prices.
+   they are sent to the **[Storage Process](https://www.ao.link/#/entity/fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk)** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/process.lua)).
+5. The **Oracle Storage Process** can be used by other Processes in the AO Testnet to load prices ([example](https://www.ao.link/#/message/3vAiYAq1x73sgsLUNgn-EcgW9GmdZkII-tB9Ho0hGww)).
 
 ## Ask for price from the **Oracle Storage Process**
 
@@ -30,15 +30,15 @@ Example:
 
 ```lua
 ao.send({
-    Target = 'KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y', -- the Oracle Storage Process id
+    Target = 'fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk', -- the Oracle Storage Process id
     ReqId = msg.Id,
     Action = "Request-Latest-Data",
-    Tickers = json.encode({ "AR" }) -- required prices
+    Tickers = json.encode({ "AR", "BTC" }) -- required prices
 })
 ```
 
 In response, the **Oracle Storage Process** [sends](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/process.lua#L37) `Action = "Receive-RedStone-Prices"` with all the requested prices
-in the `Data`. Example `Data` in the message:
+in the `Data`. Example `Data` (please note that it is a stringified JSON!) in the message:
 
 ```
 "Data": {
@@ -54,13 +54,13 @@ Example asking contract is [here](https://github.com/warp-contracts/ao-redstone-
 
 ### Process Ids
 
-1. AO Testnet Oracle Storage Process - https://www.ao.link/#/entity/KvQhYDJTQwpS3huPUJy5xybUDN3L8SE1mhLOBAt5l6Y
+1. AO Testnet Oracle Storage Process - https://www.ao.link/#/entity/fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk
     1. Process `fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk`
     2. Module `PuJq3dcddz-JZBaYAP3tpEdogFdiyh8HO5tUSGol2N0`
-2. AO Warp Testnet Verifier Process - https://www.ao.link/#/entity/ILnN6EL4zUE3nPovKBwvOl8GvC2RsvE8x_JYG8Fx6aY
-    1. Process `WrD1ew6AnpnGZwtJo1-LSxX7T79s42WkYOSaXk7Gvv4`
-    2. Module `iSxR0exVxlpL26emdzNAa5YLvuL5aqDJX8tz5QiESS4`
-3. AO Testnet Example asking process - https://www.ao.link/#/entity/MPFcKWy8GRVQhNVqGsmqV2AVLwmN5XewsWct_EBXEhs
+2. AO Warp Testnet Verifier Process - https://www.ao.link/#/entity/iSxR0exVxlpL26emdzNAa5YLvuL5aqDJX8tz5QiESS4
+    1. Process `iSxR0exVxlpL26emdzNAa5YLvuL5aqDJX8tz5QiESS4`
+    2. Module `WrD1ew6AnpnGZwtJo1-LSxX7T79s42WkYOSaXk7Gvv4`
+3. AO Testnet Example asking process - https://www.ao.link/#/entity/mwhpR_CYe1JFTPYjOdbxKHphZUE0fMFenWY9Jo1kJKY
     1. Process `mwhpR_CYe1JFTPYjOdbxKHphZUE0fMFenWY9Jo1kJKY`
     2. Module `pNwWAYW5cVPiOv1vJpxParYc0YxkuQRyV5w3oEQ6nnU`
 

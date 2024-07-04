@@ -54,8 +54,8 @@ Example asking contract is [here](https://github.com/warp-contracts/ao-redstone-
 
 ### Full example [flow](https://www.ao.link/#/message/3TlpEO5bG8--ojAkTqXLcfG8oGIju8jWzZ8du2wTH04):
 1. User sends a [transaction](https://www.ao.link/#/message/xaGRy5hOE81beCEe2pSGxHnWRlM74eXpTpUSvyXogvY) with action `Check-Prices` to the [example](https://www.ao.link/#/entity/mwhpR_CYe1JFTPYjOdbxKHphZUE0fMFenWY9Jo1kJKY) process.
-2. The example process in response sends a [request](https://www.ao.link/#/message/xaGRy5hOE81beCEe2pSGxHnWRlM74eXpTpUSvyXogvY) for prices to the Oracle process (action `Request-Latest-Data`).
-3. The Oracle process [responds](https://www.ao.link/#/message/1otLBxetWO14dOASrBxeS0FfjbQiXUvnKZdGRAc6Bd0) to the example contract with the latest requested prices sent in the `Data` field of the message (action `Receive-RedStone-Prices`)
+2. The example process in response sends a [request](https://www.ao.link/#/message/1otLBxetWO14dOASrBxeS0FfjbQiXUvnKZdGRAc6Bd0) for prices to the Oracle process (action `Request-Latest-Data`).
+3. The Oracle process [responds](https://www.ao.link/#/message/3TlpEO5bG8--ojAkTqXLcfG8oGIju8jWzZ8du2wTH04) to the example contract with the latest requested prices sent in the `Data` field of the message (action `Receive-RedStone-Prices`)
 
 ### Process Ids
 

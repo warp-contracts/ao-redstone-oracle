@@ -18,7 +18,7 @@
     - They are signed by a set of trusted RedStone nodes
     - Their timestamp is not too old in relation to the message timestamp
 
-   they are sent to the **[Storage Process](https://www.ao.link/#/entity/fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk)** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/process.lua)).
+   they are sent to the **[Storage Process](https://www.ao.link/#/entity/[   ])** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/process.lua)).
 5. The **Oracle Storage Process** can be used by other Processes in the AO Testnet to load prices ([example](https://www.ao.link/#/message/3vAiYAq1x73sgsLUNgn-EcgW9GmdZkII-tB9Ho0hGww)).
 
 ## Ask for price from the **Oracle Storage Process**
@@ -26,7 +26,7 @@
 If you want to ask for a price from your process - send a message to the **Oracle Storage Process** with
 `Action = 'Request-Latest-Data'` and `Tickers = ['AR', 'ETH', ...]`
 
-Example:
+### Example:
 
 ```lua
 ao.send({
@@ -51,6 +51,11 @@ in the `Data`. Example `Data` (please note that it is a stringified JSON!) in th
 ```
 
 Example asking contract is [here](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/example-asking-process/process.lua).
+
+### Full example [flow](https://www.ao.link/#/message/3TlpEO5bG8--ojAkTqXLcfG8oGIju8jWzZ8du2wTH04):
+1. User sends a [transaction](https://www.ao.link/#/message/xaGRy5hOE81beCEe2pSGxHnWRlM74eXpTpUSvyXogvY) with action `Check-Prices` to the [example](https://www.ao.link/#/entity/mwhpR_CYe1JFTPYjOdbxKHphZUE0fMFenWY9Jo1kJKY) process.
+2. The example process in response sends a [request](https://www.ao.link/#/message/xaGRy5hOE81beCEe2pSGxHnWRlM74eXpTpUSvyXogvY) for prices to the Oracle process (action `Request-Latest-Prices`).
+3. The Oracle process [responds](https://www.ao.link/#/message/1otLBxetWO14dOASrBxeS0FfjbQiXUvnKZdGRAc6Bd0) to the example contract with the latest requested prices sent in the `Data` field of the message (action `Receive-RedStone-Prices`)
 
 ### Process Ids
 

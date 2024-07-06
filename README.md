@@ -18,7 +18,7 @@
     - They are signed by a set of trusted RedStone nodes
     - Their timestamp is not too old in relation to the message timestamp
 
-   they are sent to the **[Storage Process](https://www.ao.link/#/entity/[   ])** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/process.lua)).
+   they are sent to the **[Storage Process](https://www.ao.link/#/entity/fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk)** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/process.lua)).
 5. The **Oracle Storage Process** can be used by other Processes in the AO Testnet to load prices ([example](https://www.ao.link/#/message/3vAiYAq1x73sgsLUNgn-EcgW9GmdZkII-tB9Ho0hGww)).
 
 ## Ask for price from the **Oracle Storage Process**

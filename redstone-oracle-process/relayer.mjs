@@ -12,7 +12,7 @@ console.log(`Running in ${env} environment`);
 
 const DATA_FEEDS = ["BTC", "ETH", "USDC", "USDT", "SOL", "stETH", "AR"];
 const DATA_SERVICE_ID = "redstone-primary-prod";
-const PROCESS = env == 'local'
+const PROCESS = env === 'local'
   ? '5wL4f2Pi9dAEGOjanCoLFlxL0w3M3jI9AJcvRu89A_0'
   : '_b21c1djDesKI5LPXBZvZbXKdkTgQIx2FsN2HXtFsqQ';
 

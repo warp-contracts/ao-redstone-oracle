@@ -8,7 +8,7 @@
    by [RedStone Primary Data Service](https://app.redstone.finance/#/app/data-services/redstone-primary-prod).  
    Currently, offered prices (in relation to USD) are:  
    "BTC", "ETH", "USDC", "USDT", "SOL", "stETH", "AR"
-2. The **Relayer** sends the RedStone data to the **[Verifier Process](https://www.ao.link/#/entity/WrD1ew6AnpnGZwtJo1-LSxX7T79s42WkYOSaXk7Gvv4)** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/warp/oracle.process.mjs)).
+2. The **Relayer** sends the RedStone data to the **[Verifier Process](https://www.ao.link/#/entity/_b21c1djDesKI5LPXBZvZbXKdkTgQIx2FsN2HXtFsqQ)** ([code](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/warp/oracle.process.mjs)).
 3. The **Oracle Verifier Process** [verifies](https://github.com/warp-contracts/ao-redstone-oracle/blob/main/redstone-oracle-process/warp/oracle.process.mjs#L76)
    the prices signatures and timestamps using the official RedStone
    protocol [package](https://github.com/redstone-finance/redstone-oracles-monorepo/tree/main/packages/protocol).
@@ -62,9 +62,9 @@ Example asking contract is [here](https://github.com/warp-contracts/ao-redstone-
 1. AO Testnet Oracle Storage Process - https://www.ao.link/#/entity/fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk
     1. Process `fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk`
     2. Module `PuJq3dcddz-JZBaYAP3tpEdogFdiyh8HO5tUSGol2N0`
-2. AO Warp Testnet Verifier Process - https://www.ao.link/#/entity/iSxR0exVxlpL26emdzNAa5YLvuL5aqDJX8tz5QiESS4
-    1. Process `iSxR0exVxlpL26emdzNAa5YLvuL5aqDJX8tz5QiESS4`
-    2. Module `WrD1ew6AnpnGZwtJo1-LSxX7T79s42WkYOSaXk7Gvv4`
+2. AO Warp Testnet Verifier Process - https://www.ao.link/#/entity/_b21c1djDesKI5LPXBZvZbXKdkTgQIx2FsN2HXtFsqQ
+    1. Process `_b21c1djDesKI5LPXBZvZbXKdkTgQIx2FsN2HXtFsqQ`
+    2. Module `zzL7EbHzpamWfy7gfCRkblTv9gUEbVY1mZvX39B7ihc`
 3. AO Testnet Example asking process - https://www.ao.link/#/entity/mwhpR_CYe1JFTPYjOdbxKHphZUE0fMFenWY9Jo1kJKY
     1. Process `mwhpR_CYe1JFTPYjOdbxKHphZUE0fMFenWY9Jo1kJKY`
     2. Module `pNwWAYW5cVPiOv1vJpxParYc0YxkuQRyV5w3oEQ6nnU`

@@ -7,7 +7,7 @@ function process.handle(msg, ao)
     local action = msg.Action
     assert(type(action) == 'string', 'Action not defined')
     if (action == "Store-Prices") then
-        assert(msg.Owner == 'jnioZFibZSCcV8o-HkBXYPYEYNib4tqfexP0kCBXX_M', 'Only trusted address allowed to store price')
+        assert(msg.Owner == 'f70fYdp_r-oJ_EApckTYQ6d66KaEScQLGTllu98QgXg', 'Only trusted address allowed to store price')
         ao.log('owner checked')
         local pricesData = json.decode(msg.Data)
         ao.log('prices decoded')
@@ -40,13 +40,8 @@ function process.handle(msg, ao)
             Action = 'Receive-RedStone-Prices',
             Data = json.encode(result)
         })
-        return ao.result({
-            Output = {
-                Request = msg.From,
-                Tickers = tickers,
-                Result = result
-            }
-        })
+
+        print('Sent pricies to ' .. msg.From )
     end
 
     assert(false, 'Unknown action ' .. action)

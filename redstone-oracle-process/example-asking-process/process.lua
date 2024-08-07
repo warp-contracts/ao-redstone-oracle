@@ -35,6 +35,18 @@ function process.handle(msg, ao)
         })
     end
 
+    -- subscription
+    if (action == "Notify-On-Topic") then
+        ao.log('Received price from "Notify-On-Topic"')
+        local result = json.decode(msg.Data)
+        return ao.result({
+            Output = {
+                Result = result,
+                Topic = msg.Topic,
+            }
+        })
+    end
+
     assert(false, 'Unknown action ' .. action)
 end
 

@@ -13,7 +13,7 @@ console.log(`Running in ${env} environment`);
 const DATA_FEEDS = ["BTC", "ETH", "USDC", "USDT", "SOL", "stETH", "AR"];
 const DATA_SERVICE_ID = "redstone-primary-prod";
 const PROCESS = env === 'local'
-  ? '5wL4f2Pi9dAEGOjanCoLFlxL0w3M3jI9AJcvRu89A_0'
+  ? '1-SUuepxFU-jM3JjJupug0wF9IyQLODAyJlYfySfAy0'
   : '_b21c1djDesKI5LPXBZvZbXKdkTgQIx2FsN2HXtFsqQ';
 
 const WALLET = JSON.parse(fs.readFileSync("./.secrets/wallet.json", "utf-8"));

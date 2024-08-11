@@ -1,4 +1,4 @@
-const TRUSTED_ARWEAVE_ADDRESS = "jnioZFibZSCcV8o-HkBXYPYEYNib4tqfexP0kCBXX_M";
+const TRUSTED_ARWEAVE_ADDRESS = "f70fYdp_r-oJ_EApckTYQ6d66KaEScQLGTllu98QgXg";
 
 const TRUSTED_REDSTONE_NODES = [
   "0x8BB8F32Df04c8b654987DAaeD53D6B6091e3B774",
@@ -15,10 +15,9 @@ const TRUSTED_REDSTONE_NODES = [
 const MAX_TS_DIFF_MS = 15_000;
 const MAX_LAST_UPDATES = 50;
 
-const AO_TESTNET_STORAGE_PROCESS = "fev8nSrdplynxom78XaQ65jSo7-88RxVVVPwHG8ffZk";
+const AO_TESTNET_STORAGE_PROCESS = null;
 
 function handle(state, message) {
-  console.log('handle');
   if (state.config === undefined) {
     console.log('state init');
     state.updateCounter = 0;
@@ -42,11 +41,17 @@ function handle(state, message) {
     throw new ProcessError('Process action not defined');
   }
 
-  console.log('action', action);
-
   switch (action) {
+    case 'Info': {
+      ao.result({
+        updates: state.updateCounter,
+        ...state.config,
+      });
+      break;
+    }
+
     case 'Update-Config': {
-      const newConfig = message.Tags.find((t) => t.name === 'Config').value
+      const newConfig = JSON.parse(message.Data);
       state.config = {
         ...state.config,
         ...newConfig
@@ -56,7 +61,9 @@ function handle(state, message) {
     }
 
     case 'Store-Price-Packages':
-      console.log('inside Store-Price-Packages');
+      if (state.config.aoProcess === null) {
+        throw new ProcessError(`AO Process is not set`);
+      }
       const dataPackage = JSON.parse(message.Data);
       const sentTs = message.Tags.find((t) => t.name === 'Sent-Timestamp').value;
 
@@ -64,7 +71,6 @@ function handle(state, message) {
         sentTs: parseInt(sentTs)
       };
       const msgTs = message.Timestamp;
-      console.log('msgTs', msgTs);
 
       for (const ticker in dataPackage) {
         console.log('Checking ticker', ticker);
@@ -72,11 +78,9 @@ function handle(state, message) {
           continue;
         }
         try {
-          console.log('Checking', ticker);
           const redStoneData = JSON.parse(RedStone.recoverSignerAddress(dataPackage[ticker][0]));
-          console.log(redStoneData);
           if (!state.config.trustedRedStoneNodes.includes(redStoneData.a)) {
-            throw new ProcessError(`Data package for ${ticker} comes from a non-trusted signer ${redStoneData.a}`)
+            throw new ProcessError(`Data package for ${ticker} comes from a non-trusted signer ${redStoneData.a}`);
           }
 
           if (redStoneData.t < (msgTs - state.config.maxTsDiffMs)) {
@@ -107,11 +111,17 @@ function handle(state, message) {
       }
 
       ao.result(`Prices stored for ${message.Id}`);
-      ao.send({
+
+      const payload = {
+        Action: "Store-Prices",
         Data: JSON.stringify(result),
+      }
+
+      ao.send({
+        ...payload,
         Target: state.config.aoProcess,
-        Action: "Store-Prices"
       });
+
       break;
     default:
       throw new ProcessError(`Unknown action: ${action.cmd}`);

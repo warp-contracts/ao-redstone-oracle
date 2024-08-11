@@ -40,13 +40,8 @@ function process.handle(msg, ao)
             Action = 'Receive-RedStone-Prices',
             Data = json.encode(result)
         })
-        return ao.result({
-            Output = {
-                Request = msg.From,
-                Tickers = tickers,
-                Result = result
-            }
-        })
+
+        print('Sent pricies to ' .. msg.From )
     end
 
     assert(false, 'Unknown action ' .. action)

@@ -1,7 +1,7 @@
 import {connect, createDataItemSigner} from "@permaweb/aoconnect";
 import fs from "node:fs";
 
-const MODULE_ID = "pNwWAYW5cVPiOv1vJpxParYc0YxkuQRyV5w3oEQ6nnU";
+const MODULE_ID = "r2_kUPhQCNspaVopOeOQ5qIjEz-fFuShbu9rnvJ3Se0";
 
 console.info(`Spawning Lua process`);
 

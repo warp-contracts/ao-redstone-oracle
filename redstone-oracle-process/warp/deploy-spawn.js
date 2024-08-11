@@ -2,8 +2,9 @@ import { Tag, WarpFactory } from 'warp-contracts';
 import { ArweaveSigner, DeployPlugin } from 'warp-contracts-plugin-deploy';
 import { createData } from 'warp-arbundles';
 import { readFileSync } from 'fs';
+import fs from "node:fs";
 
-const jwk = JSON.parse(readFileSync('./.secrets/wallet.json', 'utf-8'));
+const jwk = JSON.parse(readFileSync('./.secrets/ao-wallet.json', 'utf-8'));
 const signer = new ArweaveSigner(jwk);
 const warp = WarpFactory.forMainnet().use(new DeployPlugin());
 
@@ -67,6 +68,8 @@ async function spawn({ moduleId }) {
 async function doIt() {
   const moduleId = await deploy();
   const processId = await spawn({ moduleId });
+
+  fs.writeFileSync(`./redstone-oracle-process/warp/processId_${env}.txt`, processId, 'utf-8');
 
   return {
     moduleId,

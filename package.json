@@ -4,18 +4,17 @@
   "scripts": {
     "ao-cli": "curl -L https://install_ao.g8way.io | bash",
     "test": "node build.js && vitest",
-    "build": "cd redstone-oracle-process && ao build && mkdir -p dist && mv process.wasm dist/",
     "build-example": "cd redstone-oracle-process/example-asking-process && ao build && mkdir -p dist && mv process.wasm dist/",
-    "deploy": "ao publish redstone-oracle-process/dist/process.wasm -w .secrets/wallet.json -t Memory-Limit -v 1-gb -t Compute-Limit -v 9000000000000 -t Module-Format -v wasm64-unknown-emscripten-draft_2024_02_15",
-    "spawn": "node redstone-oracle-process/spawn-lua.mjs",
     "deploy-example": "ao publish redstone-oracle-process/example-asking-process/dist/process.wasm -w .secrets/wallet.json -t Memory-Limit -v 1-gb -t Compute-Limit -v 9000000000000 -t Module-Format -v wasm64-unknown-emscripten-draft_2024_02_15",
     "spawn-example": "node redstone-oracle-process/example-asking-process/spawn-lua.mjs",
-    "pm2": "pm2 start redstone-oracle-process/relayer.mjs --name redstone-relayer --cron-restart=\"*/15 * * * * *\" -- --env prod/dist/process.wasm -w .secrets/wallet.json -t Memory-Limit -v 1-gb -t Compute-Limit -v 9000000000000 -t Module-Format -v wasm64-unknown-emscripten-draft_2024_02_15",
+    "deploy-subscribe": "cd redstone-oracle-process/subscribable && bash build.sh && cd ../../ && node redstone-oracle-process/subscribable/spawn.js",
+    "pm2": "pm2 start redstone-oracle-process/relayer.mjs --name redstone-relayer --cron-restart=\"*/15 * * * * *\"",
     "loader-issue": "cd test-process && ao build && node --experimental-wasm-memory64 process.helper.mjs"
   },
   "dependencies": {
+    "@permaweb/aoconnect": "^0.0.56",
     "@redstone-finance/sdk": "0.5.4",
-    "@permaweb/aoconnect": "^0.0.56"
+    "exponential-backoff": "^3.1.1"
   },
   "devDependencies": {
     "@permaweb/ao-loader": "0.0.35",

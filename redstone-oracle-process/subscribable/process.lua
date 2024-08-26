@@ -37,12 +37,12 @@ ORACLE = {}
 
 ORACLE._version = ORACLE._version or version
 ORACLE.Storage = ORACLE.Storage or {}
-ORACLE.trustedOwner = ORACLE.trustedOwner or 'f70fYdp_r-oJ_EApckTYQ6d66KaEScQLGTllu98QgXg'
+ORACLE.verifierProcess = ORACLE.verifierProcess or 'AeNGydMeVggak4I6LhO_B89XeBF4tTBsgngJvTa_iLI'
 ORACLE.v1 = ORACLE.v1 or {}
 ORACLE.v2 = ORACLE.v2 or {}
 
 function ORACLE.v1.StorePrices(msg)
-    assert(msg.Owner == ORACLE.trustedOwner, 'Only trusted address allowed to store price')
+    assert(msg.From == ORACLE.verifierProcess, 'Only trusted verifier process allowed to store price')
     local priceData = json.decode(msg.Data)
     table.insert(ORACLE.Storage, priceData)
     if #ORACLE.Storage > 50 then
@@ -50,42 +50,6 @@ function ORACLE.v1.StorePrices(msg)
     end
     -- The only place where subscribers are notified
     Subscribable.notifyTopic('prices-update', priceData, msg.Timestamp)
-end
-
-function _RequestLatestData(msg)
-    local tickers = json.decode(msg.Tickers)
-    assert(#tickers > 0, 'Tickers not defined')
-    assert(#ORACLE.Storage > 0, 'Storage is empty')
-    local result = {};
-
-    local latestPrices = ORACLE.Storage[#ORACLE.Storage]
-    for k, v in pairs(tickers) do
-        assert(latestPrices[v] ~= nil, 'No prices data for ' .. v)
-        result[v] = latestPrices[v]["verifiedPackage"]
-    end
-
-    return result
-end
-
-function ORACLE.v1.RequestLatestData(msg)
-    local result = _RequestLatestData(msg)
-    ao.send({
-        Target = msg.From,
-        ReqId = msg.ReqId,
-        Action = 'Receive-RedStone-Prices',
-        Data = json.encode(result)
-    })
-
-    print('Sent prices ' .. msg.From)
-end
-
-function ORACLE.v2.RequestLatestData(msg)
-    local result = _RequestLatestData(msg)
-    msg.reply({
-        Data = json.encode(result)
-    })
-
-    print('Sent prices to ' .. msg.From)
 end
 
 function ORACLE.v1.Info(msg)
@@ -96,11 +60,16 @@ function ORACLE.v1.Info(msg)
     })
 end
 
-Handlers.add(
-        "Register-Whitelisted-Subscriber",
-        Handlers.utils.hasMatchingTag("Action", "Register-Whitelisted-Subscriber"),
-        Subscribable.handleRegisterWhitelistedSubscriber
-)
+function ORACLE.v2.Info(msg)
+    assert(#ORACLE.Storage > 0, 'Storage is empty')
+    local latestPrices = ORACLE.Storage[#ORACLE.Storage]
+    ao.send({
+        Target = msg.From,
+        Version = ORACLE._version,
+        VerifierProcess = ORACLE.verifierProcess,
+        Data = json.encode(latestPrices)
+    })
+end
 
 Handlers.add(
         "ORACLE.v1.Store-Prices",
@@ -109,15 +78,9 @@ Handlers.add(
 )
 
 Handlers.add(
-        "ORACLE.v1.Request-Latest-Data",
-        Handlers.utils.hasMatchingTagOf("Action", { "Request-Latest-Data", "v1.Request-Latest-Data" }),
-        ORACLE.v1.RequestLatestData
-)
-
-Handlers.add(
-        "ORACLE.v2.Request-Latest-Data",
-        Handlers.utils.hasMatchingTag("Action", "v2.Request-Latest-Data"),
-        ORACLE.v2.RequestLatestData
+        "Register-Whitelisted-Subscriber",
+        Handlers.utils.hasMatchingTag("Action", "Register-Whitelisted-Subscriber"),
+        Subscribable.handleRegisterWhitelistedSubscriber
 )
 
 Handlers.add(

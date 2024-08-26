@@ -8,8 +8,7 @@
     "deploy-example": "ao publish redstone-oracle-process/example-asking-process/dist/process.wasm -w .secrets/wallet.json -t Memory-Limit -v 1-gb -t Compute-Limit -v 9000000000000 -t Module-Format -v wasm64-unknown-emscripten-draft_2024_02_15",
     "spawn-example": "node redstone-oracle-process/example-asking-process/spawn-lua.mjs",
     "deploy-subscribe": "cd redstone-oracle-process/subscribable && bash build.sh && cd ../../ && node redstone-oracle-process/subscribable/spawn.js",
-    "pm2": "pm2 start redstone-oracle-process/relayer.mjs --name redstone-relayer --cron-restart=\"*/15 * * * * *\"",
-    "loader-issue": "cd test-process && ao build && node --experimental-wasm-memory64 process.helper.mjs"
+    "pm2": "pm2 start redstone-oracle-process/relayer.mjs --name redstone-relayer --cron-restart=\"*/15 * * * * *\""
   },
   "dependencies": {
     "@permaweb/aoconnect": "^0.0.56",

@@ -3,10 +3,9 @@ import fs from "node:fs";
 import {backOff} from "exponential-backoff";
 
 const AOS_MODULE_2_0_0_RC_1_1_NO_SQLITE = "xT0ogTeagEGuySbKuUoo_NaWeeBv1fZ4MqgDdKVKY0U";
-const AOS_MODULE_2_0_0_RC1_SQLITE = "sFNHeYzhHfP9vV9CPpqZMU-4Zzq_qKGKwlwMZozWi2Y";
 const AO_TESTNET_SU = "_GQ33BkPtZrqxA84vM8Zk-N2aO0toNNu_C-l-rawrBA";
 
-console.info(`Spawning AOS Oracle Lua process`);
+console.info(`Spawning AOS Oracle Subscribable Lua process`);
 
 const {spawn, message} = connect();
 
@@ -24,6 +23,7 @@ async function doSpawn() {
     tags: [
       {name: 'Authority', value: 'fcoN_xJeisVsPXA-trzVAuIiqO3ydLQxM-L4XbrQKzY'},
       {name: 'Authority', value: 'f70fYdp_r-oJ_EApckTYQ6d66KaEScQLGTllu98QgXg'},
+      {name: 'Authority', value: 'jnioZFibZSCcV8o-HkBXYPYEYNib4tqfexP0kCBXX_M'},
     ],
     data: '1984'
   });

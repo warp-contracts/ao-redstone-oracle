@@ -51,7 +51,7 @@ async function spawn({ moduleId }) {
   const processDataItem = createData("{}", signer, { tags: processTags });
   await processDataItem.sign(signer);
 
-  const muUrl = env === 'local' ? 'http://localhost:8080' : 'https://mu.warp.cc';
+  const muUrl = env === 'local' ? 'http://localhost:8080' : 'https://mu-asia.warp.cc';
 
   const processResponse = await fetch(muUrl, {
     method: 'POST',

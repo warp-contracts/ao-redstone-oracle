@@ -15,8 +15,8 @@ const DATA_SERVICE_ID = "redstone-primary-prod";
 const PROCESS = fs.readFileSync(`./redstone-oracle-process/warp/processId_${env}.txt`, "utf-8")
 
 const WALLET = JSON.parse(fs.readFileSync("./.secrets/ao-wallet.json", "utf-8"));
-const MU_URL = env === 'local' ? 'http://localhost:8080' : 'https://mu.warp.cc';
-const CU_URL = env === 'local' ? 'http://localhost:8090' : 'https://cu.warp.cc';
+const MU_URL = env === 'local' ? 'http://localhost:8080' : 'https://mu-asia.warp.cc';
+const CU_URL = env === 'local' ? 'http://localhost:8090' : 'https://cu-asia.warp.cc';
 
 const { message } = connect({
   MU_URL,

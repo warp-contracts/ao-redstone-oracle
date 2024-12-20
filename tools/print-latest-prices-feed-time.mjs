@@ -30,7 +30,8 @@ dryrun({
         let arPriceDate = new Date(pf.AR.t);
         let behind = Date.now() - pf.AR.t;
         let execution = Date.now() - start;
-        console.log(`Execution took[ms]: ${execution}    Last prices feed: ${arPriceDate.toISOString()}    behind[ms]: ${behind}`);
+        let diff = behind - execution;
+        console.log(`Execution took[ms]: ${execution}  Last prices feed: ${arPriceDate.toISOString()}  behind[ms]: ${behind}  diff[ms]: ${diff}  AR: ${pf.AR.v}`);
     });
 
 function pricesFeed(result) {

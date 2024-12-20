@@ -17,8 +17,8 @@ const PROCESS = env === 'local'
   : '_b21c1djDesKI5LPXBZvZbXKdkTgQIx2FsN2HXtFsqQ';
 
 const WALLET = JSON.parse(fs.readFileSync("./.secrets/wallet.json", "utf-8"));
-const MU_URL = env === 'local' ? 'http://localhost:8080' : 'https://mu.warp.cc';
-const CU_URL = env === 'local' ? 'http://localhost:8090' : 'https://cu.warp.cc';
+const MU_URL = env === 'local' ? 'http://localhost:8080' : 'https://mu-asia.warp.cc';
+const CU_URL = env === 'local' ? 'http://localhost:8090' : 'https://cu-asia.warp.cc';
 
 const { message } = connect({
   MU_URL,

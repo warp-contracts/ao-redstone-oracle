@@ -10,7 +10,7 @@ if (envIdx < 0) {
   throw new Error("Specify 'env' flash with either 'local' or 'prod' value");
 }
 const env = process.argv[envIdx + 1];
-const muUrl = env === 'local' ? 'http://localhost:8080' : 'https://mu.warp.cc';
+const muUrl = env === 'local' ? 'http://localhost:8080' : 'https://mu-asia.warp.cc';
 
 console.info(`Setting storage process for ${env} env.`);
 

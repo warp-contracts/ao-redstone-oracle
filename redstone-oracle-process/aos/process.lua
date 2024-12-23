@@ -7,18 +7,50 @@ ORACLE = {}
 
 ORACLE._version = ORACLE._version or version
 ORACLE.Storage = ORACLE.Storage or {}
-ORACLE.verifierProcess = ORACLE.verifierProcess or 'AeNGydMeVggak4I6LhO_B89XeBF4tTBsgngJvTa_iLI'
+
+-- verifierProcess is treated as a main price supplier and feed goes straight to the storage
+ORACLE.verifierProcess = ORACLE.verifierProcess or 'g4_Dzk3Ib-PBY3rnvbpGkKpG6fU_DBBy4PSaaUpQcGE'
+-- other verifiers have their timestamp checked, if outdated feed is ignored
+ORACLE.verifierProcesses = ORACLE.verifierProcesses or {
+    'g4_Dzk3Ib-PBY3rnvbpGkKpG6fU_DBBy4PSaaUpQcGE',
+    'MBu-epRqXCqqLEMMSqaXajQyM5f0KwW-adiF12Ue89I'
+}
+
 ORACLE.v1 = ORACLE.v1 or {}
 ORACLE.v2 = ORACLE.v2 or {}
 
+local function _FromTrustedVerifier (msg)
+    for _, value in pairs(ORACLE.verifierProcesses) do
+        if value == msg.From then
+            return true
+        end
+    end
+
+    return false
+end
+
+function _PricesAreMostRecent(priceData)
+    local latestPrices = ORACLE.Storage[#ORACLE.Storage]
+
+    for k, v in pairs(priceData) do
+        assert(v["verifiedPackage"].t > latestPrices[k]["verifiedPackage"].t, 'Only the most recent prices are stored')
+    end
+
+    return true
+end
+
 function ORACLE.v1.StorePrices(msg)
-    assert(msg.From == ORACLE.verifierProcess, 'Only trusted verifier process allowed to store price')
+    assert(_FromTrustedVerifier(msg), 'Only trusted verifier processes allowed to store price')
     local priceData = json.decode(msg.Data)
-    table.insert(ORACLE.Storage, priceData)
-    if #ORACLE.Storage > 50 then
-        table.remove(ORACLE.Storage, 1)
+
+    if msg.From == ORACLE.verifierProcess or _PricesAreMostRecent(priceData) then
+        table.insert(ORACLE.Storage, priceData)
+        if #ORACLE.Storage > 50 then
+            table.remove(ORACLE.Storage, 1)
+        end
     end
 end
+
 
 function _RequestLatestData(msg)
     local tickers = json.decode(msg.Tickers)

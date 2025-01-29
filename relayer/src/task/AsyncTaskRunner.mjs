@@ -7,7 +7,11 @@ export class AsyncTaskRunner {
     const task = new AsyncTask(
       "Relayer task",
       async () => {
-        return await runIteration(logger, relayerConfig);
+        return await RedstoneCommon.timeout(
+          runIteration(logger, relayerConfig),
+          relayerConfig.iterationTimeoutMs,
+          `Updating prices didn't succeed in ${relayerConfig.iterationTimeoutMs} [ms].`
+        );
       },
       (error) =>
         logger.log(
@@ -18,7 +22,7 @@ export class AsyncTaskRunner {
 
     const job = new SimpleIntervalJob(
       {
-        milliseconds: relayerConfig.relayerIterationIntervalMs,
+        milliseconds: relayerConfig.iterationIntervalMs,
         runImmediately: true,
       },
       task,

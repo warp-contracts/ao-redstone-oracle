@@ -41,7 +41,6 @@ async function generatePayload(logger, config) {
   const result = {};
 
   for (const dataPackageId in allDataPackages) {
-    const signers = new Set();
     const dataPackages = allDataPackages[dataPackageId];
     const timestampMs = checkAndGetSameTimestamp(dataPackages);
 
@@ -50,14 +49,6 @@ async function generatePayload(logger, config) {
     }
     if (timestampMs < now - maxTsDiffMs) {
       throw new Error(`Data too old. ${timestampMs}, now: ${now}`)
-    }
-
-    for (const signedDataPackage of dataPackages) {
-      const recoveredSignerAddress = signedDataPackage.recoverSignerAddress();
-      signers.add(recoveredSignerAddress);
-    }
-    if (signers.size < uniqueSignersCount) {
-      throw new Error(`Not enough unique signers for ${dataPackageId}`);
     }
 
     result[dataPackageId] = {

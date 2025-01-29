@@ -5,7 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node src/main.mjs"
+    "relayer:start": "node src/main.mjs",
+    "process:spawn": "node process/spawn.mjs"
   },
   "repository": {
     "type": "git",

@@ -62,7 +62,9 @@ function ORACLE.v1.Info(msg)
         Target = msg.From,
         Version = ORACLE._version,
         RelayerWallets = ORACLE.relayerWallets,
-        Prices = ORACLE.Storage
+        Data = {
+            Prices = ORACLE.Storage
+        }
     })
 end
 
